@@ -17,8 +17,6 @@ const Game: React.FC = () => {
   return (
     <div>
       <h1>Game</h1>
-      {/* SignOut button, for now will navigate to home, eventually will remove user authentication */}
-      {/* <SearchBar onSearch={handleSearch} /> */}
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}
       {/* have 2 char cards, one will be chosen by the player, one will be randomly selected */}
       {/* Handle mapping response to character cards here */}
