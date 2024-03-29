@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/searchbar/SearchBar';
 import NavBar from '../components/navbar/NavBar';
 
@@ -8,12 +8,34 @@ const Game: React.FC = () => {
   const [battleOccurred, setBattleOccurred] = useState<boolean>(false); // Sets state if battle occured, to conditionally render winner modal
   const [playerChar, setPlayerChar] = useState<string>('');
   const [compChar, setCompChar] = useState<string>('');
+  const [characters, setCharacters] = useState<any[]>([]);
 
   const handleSearch = (seacrhTerm: string) => {
     // Fetch characters from Marvel API and Stroe them in state
 
     setSearchResults([...searchResults]);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/marvelAPI'); // Make a request to the API route
+
+        if (!response.ok) {
+          throw new Error('Failed to Fetch data');
+        }
+
+        const data = await response.json();
+        // console.log('data: ', data);
+        setCharacters(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  // console.log('characters :', characters);
   return (
     <div>
       <h1>Game</h1>
