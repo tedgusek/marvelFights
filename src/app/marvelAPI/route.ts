@@ -21,10 +21,10 @@ interface ErrorResponse {
   error: string;
 }
 
-export async function GET(
-  req: NextApiRequest,
-  res: NextApiResponse<Character[] | ErrorResponse>
-) {
+export async function GET() {
+//   error: any,
+//   req: NextRequest,
+//   res: NextApiResponse<Character[] | ErrorResponse>
   const apiKey = process.env.MARVEL_API_KEY_PRIVATE;
   const publicKey = process.env.MARVEL_API_KEY_PUBLIC;
 
@@ -34,21 +34,23 @@ export async function GET(
 
     const endpoint = `v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
 
-    const response = await fetch(`http://gateway.marvel.com/${endpoint}`);
+    const res = await fetch(`http://gateway.marvel.com/${endpoint}`);
     // console.log('response : ', response);
     //   const charactersArray: Character[] = response.data.data.results;
-    if (!response.ok) {
-      throw new Error('Failed to fetch Data from Marvel API');
-    }
+    if (res.ok) {
+      const responseData: any = await res.json();
 
-    const responseData: any = await response.json();
-    const charactersArray: Character[] = responseData.data.results;
-    // console.log('charactersArray : ', charactersArray);
-    // return res.status(200).json(charactersArray);
-    return res.status(200).json(charactersArray);
+      const charactersArray: Character[] = responseData.data.results;
+      // console.log('charactersArray : ', charactersArray);
+      // return res.status(200).json(charactersArray);
+
+      // return res.status(200).json(charactersArray);
+      return Response.json(charactersArray);
+    }
+    throw new Error('Failed to fetch Data from Marvel API');
   } catch (error) {
     // console.error(`Error retrieving Characters : ${error}`);
     // return res.status(500).json({ error: 'Internal Server Error' });
-    return res.status(500).json({ error: 'Internal Server Error' });
+    return Response.json({ error: 'Internal Server Error' });
   }
 }

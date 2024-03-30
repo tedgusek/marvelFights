@@ -35,7 +35,7 @@ const Game: React.FC = () => {
 
     fetchData();
   }, []);
-  // console.log('characters :', characters);
+  console.log('characters :', characters);
   return (
     <div>
       <h1>Game</h1>
