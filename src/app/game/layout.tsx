@@ -19,10 +19,13 @@ export default function GameLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <div className='fixed top-8 right-12'>
+        <div className='fixed top-8 right-12 bg-inherit'>
           <NavBar />
         </div>
         <div className='flex flex-col items-center mt-40'>{children}</div>
+        <div className='bottom-2 fixed bg-inherit '>
+          Data Provided by Marvel. © 2024 Marvel
+        </div>
       </body>
     </html>
   );

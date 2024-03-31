@@ -22,17 +22,18 @@ interface ErrorResponse {
 }
 
 export async function GET() {
-//   error: any,
-//   req: NextRequest,
-//   res: NextApiResponse<Character[] | ErrorResponse>
+  //   error: any,
+  //   req: NextRequest,
+  //   res: NextApiResponse<Character[] | ErrorResponse>
   const apiKey = process.env.MARVEL_API_KEY_PRIVATE;
   const publicKey = process.env.MARVEL_API_KEY_PUBLIC;
 
   try {
     const ts = new Date().getTime().toString();
     const hash = md5(ts + apiKey + publicKey);
+    const limit = 100;
 
-    const endpoint = `v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}`;
+    const endpoint = `v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}`;
 
     const res = await fetch(`http://gateway.marvel.com/${endpoint}`);
     // console.log('response : ', response);

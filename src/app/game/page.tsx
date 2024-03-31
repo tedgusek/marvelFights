@@ -38,12 +38,12 @@ const Game: React.FC = () => {
     fetchData();
   }, []);
   // console.log('characters :', characters);
-  // console.log('characters[0] :', characters[0]);
+  console.log('characters[0].thumbnail :', characters[0]);
   // console.log('characters[0][id] :', characters[0].id);
   // console.log(' tyoeof characters[0][id] :', typeof characters[0].id);
   // console.log(typeof characters[0]['id'] === 'number');
   return (
-    <div>
+    <div className='w-full flex flex-col items-center'>
       <h1>Game</h1>
       <CharacterList characters={characters} />
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}

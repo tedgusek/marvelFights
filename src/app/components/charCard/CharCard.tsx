@@ -2,6 +2,7 @@ import React from 'react';
 
 interface Thumbnail {
   path: string;
+  extension: string;
 }
 
 interface Character {
@@ -19,7 +20,8 @@ interface CharacterCardProps {
 const CharCard: React.FC<CharacterCardProps> = ({ character }) => {
   // const characterObject: any = character
   const charName: string = character.name;
-  const thumbnail: string = character.thumbnail.path;
+  const thumbnail: string =
+    character.thumbnail.path + '.' + character.thumbnail.extension;
   const description: string = character.description;
   const altDescription: string = `Comic style picture of ${charName}`;
 
@@ -30,7 +32,7 @@ const CharCard: React.FC<CharacterCardProps> = ({ character }) => {
   //   } else console.error('Issue assigning the character ID to the key');
 
   return (
-    <div className='bg-grey rounded-lg border-white border-4 h-56 w-28'>
+    <div className='bg-grey rounded-lg border-white border-4 h-56 w-28 inline-block overflow-auto'>
       <img
         src={thumbnail}
         alt={altDescription}

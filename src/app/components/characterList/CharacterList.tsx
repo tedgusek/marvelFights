@@ -3,6 +3,7 @@ import React from 'react';
 
 interface Thumbnail {
   path: string;
+  extension: string;
 }
 
 interface Character {
@@ -22,7 +23,7 @@ interface CharacterListProps {
 
 const CharacterList: React.FC<CharacterListProps> = ({ characters }) => {
   return (
-    <div className='w-auto h-auto fixed bottom-5 rounded-lg border-2 border-gray-500'>
+    <div className='w-5/6 rounded-lg border-2 border-gray-500 inline-block'>
       {characters.map((character) => (
         <CharCard key={character.id} character={character} />
       ))}
