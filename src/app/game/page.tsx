@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/searchbar/SearchBar';
 import NavBar from '../components/navbar/NavBar';
+import CharCard from '../components/charCard/CharCard';
+import CharacterList from '../components/characterList/CharacterList';
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -35,10 +37,15 @@ const Game: React.FC = () => {
 
     fetchData();
   }, []);
-  console.log('characters :', characters);
+  // console.log('characters :', characters);
+  // console.log('characters[0] :', characters[0]);
+  // console.log('characters[0][id] :', characters[0].id);
+  // console.log(' tyoeof characters[0][id] :', typeof characters[0].id);
+  // console.log(typeof characters[0]['id'] === 'number');
   return (
     <div>
       <h1>Game</h1>
+      <CharacterList characters={characters} />
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}
       {/* have 2 char cards, one will be chosen by the player, one will be randomly selected */}
       {/* Handle mapping response to character cards here */}
