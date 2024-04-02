@@ -15,9 +15,11 @@ interface Character {
 
 interface CharacterCardProps {
   character: Character;
+  listRef: any;
+  // loading: boolean;
 }
 
-const CharCard: React.FC<CharacterCardProps> = ({ character }) => {
+const CharCard: React.FC<CharacterCardProps> = ({ character, listRef }) => {
   // const characterObject: any = character
   const charName: string = character.name;
   const thumbnail: string =
@@ -32,7 +34,10 @@ const CharCard: React.FC<CharacterCardProps> = ({ character }) => {
   //   } else console.error('Issue assigning the character ID to the key');
 
   return (
-    <div className='bg-grey rounded-lg border-white border-4 h-56 w-28 inline-block overflow-auto'>
+    <div
+      className='bg-grey rounded-lg border-white border-4 h-56 w-28 inline-block overflow-auto'
+      ref={listRef}
+    >
       <img
         src={thumbnail}
         alt={altDescription}

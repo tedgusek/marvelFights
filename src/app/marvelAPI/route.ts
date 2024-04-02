@@ -21,37 +21,43 @@ interface ErrorResponse {
   error: string;
 }
 
-export async function GET() {
+export async function GET(
+  req: NextRequest,
+  res: NextApiResponse<Character[] | ErrorResponse>
+) {
   //   error: any,
-  //   req: NextRequest,
-  //   res: NextApiResponse<Character[] | ErrorResponse>
+  // req: NextRequest,
+  // res: NextApiResponse<Character[] | ErrorResponse>
+  //   const { offset = 0 } = req.query;
+  //   const offset = 0;
+  const query = req.url?.split('?')[1]; // Extract query parameters from the URL
+  const { offset = 0 } = query
+    ? require('url').parse('?' + query, true).query
+    : {}; // Parse the query string to get the offset
   const apiKey = process.env.MARVEL_API_KEY_PRIVATE;
   const publicKey = process.env.MARVEL_API_KEY_PUBLIC;
-
+  console.log('offset : ', offset);
   try {
     const ts = new Date().getTime().toString();
     const hash = md5(ts + apiKey + publicKey);
     const limit = 100;
 
-    const endpoint = `v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}`;
+    const endpoint = `v1/public/characters?ts=${ts}&apikey=${publicKey}&hash=${hash}&limit=${limit}&offset=${offset}`;
 
     const res = await fetch(`http://gateway.marvel.com/${endpoint}`);
-    // console.log('response : ', response);
-    //   const charactersArray: Character[] = response.data.data.results;
+
     if (res.ok) {
       const responseData: any = await res.json();
+      //   const responseData: any = await response.json();
 
       const charactersArray: Character[] = responseData.data.results;
-      // console.log('charactersArray : ', charactersArray);
-      // return res.status(200).json(charactersArray);
+      // const code: number = responseData.code;  // response code
 
-      // return res.status(200).json(charactersArray);
       return Response.json(charactersArray);
+      //   return res.status(200).json(charactersArray);
     }
     throw new Error('Failed to fetch Data from Marvel API');
   } catch (error) {
-    // console.error(`Error retrieving Characters : ${error}`);
-    // return res.status(500).json({ error: 'Internal Server Error' });
     return Response.json({ error: 'Internal Server Error' });
   }
 }

@@ -19,14 +19,34 @@ interface Character {
 // }
 interface CharacterListProps {
   characters: Character[];
+  loading: boolean;
+  listRef: any;
+  //   ref: HTMLDivElement | null;
 }
 
-const CharacterList: React.FC<CharacterListProps> = ({ characters }) => {
+const CharacterList: React.FC<CharacterListProps> = ({
+  characters,
+  loading,
+  listRef,
+}) => {
   return (
     <div className='w-5/6 rounded-lg border-2 border-gray-500 inline-block'>
-      {characters.map((character) => (
-        <CharCard key={character.id} character={character} />
-      ))}
+      {characters.map((character, index) =>
+        index === characters.length - 5 ? (
+          <CharCard
+            key={character.id}
+            character={character}
+            listRef={listRef}
+          />
+        ) : (
+          <CharCard
+            key={character.id}
+            character={character}
+            listRef={undefined}
+          />
+        )
+      )}
+      {loading && <div> Loading... </div>}
     </div>
   );
 };
