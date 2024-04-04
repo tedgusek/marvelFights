@@ -8,15 +8,16 @@ import CharacterList from '../components/characterList/CharacterList';
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [battleOccurred, setBattleOccurred] = useState<boolean>(false); // Sets state if battle occured, to conditionally render winner modal
-  const [playerChar, setPlayerChar] = useState<string>('');
-  const [compChar, setCompChar] = useState<string>('');
-  const [characters, setCharacters] = useState<any[]>([]);
-  const [offset, setOffset] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(false);
-  const observer = useRef<IntersectionObserver | null>(null);
-  const lastCharacterRef = useRef<HTMLDivElement | null>(null);
+  const [playerChar, setPlayerChar] = useState<string>(''); // Sets the chosen character by the player to battle
+  const [compChar, setCompChar] = useState<string>(''); // Sets the random character assigned by the computer for battle
+  const [characters, setCharacters] = useState<any[]>([]); // Stores the characters from the MarvelAPI call into state
+  const [offset, setOffset] = useState<number>(0); // sets the offset for subsequent calls to the marvel API to saturate the page with the data
+  const [loading, setLoading] = useState<boolean>(false); // Manages the state of Loading
 
-  const fetchData = async () => {
+  const observer = useRef<IntersectionObserver | null>(null); // Defines the observer for the page saturation from Marvel API
+  const lastCharacterRef = useRef<HTMLDivElement | null>(null); // Sets the reference for where the page will start to saturate with data
+
+  const fetchData = async (p0?: number) => {
     setLoading(true);
     try {
       const response = await fetch(`/marvelAPI?offset=${offset}`); // Make a request to the API route
@@ -26,12 +27,8 @@ const Game: React.FC = () => {
       }
 
       const data = await response.json();
-      // const newData =
-      // console.log('data: ', data);
-      // setCharacters((prevCharacters) => [...prevCharacters, ...data]);
-      setCharacters([...data]);
-      setOffset(offset + 100);
-      // console.log('offset :', offset);
+
+      return data;
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -39,9 +36,28 @@ const Game: React.FC = () => {
     }
   };
 
+  const handleIntersection: IntersectionObserverCallback = (entries) => {
+    const lastEntry = entries[0];
+
+    if (lastEntry.isIntersecting && !loading) {
+      setOffset((prevOffset) => prevOffset + 100);
+
+      fetchData(offset).then((data) => {
+        if (data) {
+          setCharacters((prevCharacters) => [...prevCharacters, ...data]);
+        }
+      });
+    }
+  };
+
   // On Page Load Character fetch
   useEffect(() => {
-    fetchData();
+    fetchData().then((data) => {
+      if (data) {
+        setCharacters(data);
+        setOffset((prevOffset) => prevOffset + 100);
+      }
+    });
   }, []);
 
   // To saturate the Character div when scrolling down to end of available characters
@@ -66,27 +82,15 @@ const Game: React.FC = () => {
     };
   }, [characters, loading]);
 
-  const handleIntersection: IntersectionObserverCallback = (entries) => {
-    const lastEntry = entries[0];
-    if (lastEntry.isIntersecting && !loading) {
-      fetchData();
-    }
-  };
-
   // Starting to think about search bar
   const handleSearch = (seacrhTerm: string) => {
     // Fetch characters from Marvel API and Store them in state
 
     setSearchResults([...searchResults]);
   };
-  // console.log('offset :', offset);
-  // console.log('characters :', characters);
-  // console.log('characters[0].thumbnail :', characters[0]);
-  // console.log('characters[0][id] :', characters[0].id);
-  // console.log(' tyoeof characters[0][id] :', typeof characters[0].id);
-  // console.log(typeof characters[0]['id'] === 'number');
+
   return (
-    <div className='w-full flex flex-col items-center'>
+    <div className='flex flex-col items-center overflow-auto fixed top-36 bottom-10 w-5/6 border-green-400 border-4 rounded-xl'>
       <h1>Game</h1>
       <CharacterList
         characters={characters}

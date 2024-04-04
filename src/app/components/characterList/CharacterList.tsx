@@ -30,9 +30,9 @@ const CharacterList: React.FC<CharacterListProps> = ({
   listRef,
 }) => {
   return (
-    <div className='w-5/6 rounded-lg border-2 border-gray-500 inline-block'>
+    <div className='w-full rounded-lg flex flex-wrap justify-center'>
       {characters.map((character, index) =>
-        index === characters.length - 5 ? (
+        index === characters.length - 20 ? (
           <CharCard
             key={character.id}
             character={character}
