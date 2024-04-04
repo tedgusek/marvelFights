@@ -21,6 +21,7 @@ interface CharacterListProps {
   characters: Character[];
   loading: boolean;
   listRef: any;
+  onCharClick: (character: Character) => void;
   //   ref: HTMLDivElement | null;
 }
 
@@ -28,6 +29,7 @@ const CharacterList: React.FC<CharacterListProps> = ({
   characters,
   loading,
   listRef,
+  onCharClick,
 }) => {
   return (
     <div className='w-full rounded-lg flex flex-wrap justify-center'>
@@ -37,12 +39,14 @@ const CharacterList: React.FC<CharacterListProps> = ({
             key={character.id}
             character={character}
             listRef={listRef}
+            onCharClick={onCharClick}
           />
         ) : (
           <CharCard
             key={character.id}
             character={character}
             listRef={undefined}
+            onCharClick={onCharClick}
           />
         )
       )}

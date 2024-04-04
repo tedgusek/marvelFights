@@ -16,10 +16,15 @@ interface Character {
 interface CharacterCardProps {
   character: Character;
   listRef: any;
+  onCharClick: (character: Character) => void;
   // loading: boolean;
 }
 
-const CharCard: React.FC<CharacterCardProps> = ({ character, listRef }) => {
+const CharCard: React.FC<CharacterCardProps> = ({
+  character,
+  listRef,
+  onCharClick,
+}) => {
   // const characterObject: any = character
   const charName: string = character.name;
   const thumbnail: string =
@@ -27,6 +32,9 @@ const CharCard: React.FC<CharacterCardProps> = ({ character, listRef }) => {
   const description: string = character.description;
   const altDescription: string = `Comic style picture of ${charName}`;
 
+  const handleClick = () => {
+    onCharClick(character);
+  };
   //   if (typeof (character.id === 'string')) {
   //     const id = parseInt(character.id);
   //   } else if (typeof (character.id === 'number')) {
@@ -35,6 +43,7 @@ const CharCard: React.FC<CharacterCardProps> = ({ character, listRef }) => {
 
   return (
     <div
+      onClick={handleClick}
       className='bg-grey rounded-lg border-white border-4 h-56 w-28 inline-block overflow-auto'
       ref={listRef}
     >
