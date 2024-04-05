@@ -32,7 +32,6 @@ export interface CharacterCardProps {
   character: Character;
   listRef: any;
   onCharClick: (character: Character) => void;
-  // loading: boolean;
 }
 
 export interface CharacterListProps {
@@ -40,7 +39,6 @@ export interface CharacterListProps {
   loading: boolean;
   listRef: any;
   onCharClick: (character: Character) => void;
-  //   ref: HTMLDivElement | null;
 }
 
 export interface CharacterPair {

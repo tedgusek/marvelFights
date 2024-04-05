@@ -1,24 +1,5 @@
 import React from 'react';
-import { Thumbnail, Character, ModalProps } from '@/app/types/interface';
-
-// interface Thumbnail {
-//   path: string;
-//   extension: string;
-// }
-
-// interface Character {
-//   id: number;
-//   name: string;
-//   thumbnail: Thumbnail;
-//   character: string;
-//   description: string;
-// }
-
-// interface ModalProps {
-//   character: Character | null;
-//   onClose: () => void;
-//   setPlayerChar: () => void;
-// }
+import { ModalProps } from '@/app/types/interface';
 
 const CharModal: React.FC<ModalProps> = ({
   character,
@@ -26,7 +7,7 @@ const CharModal: React.FC<ModalProps> = ({
   setPlayerChar,
 }) => {
   if (character === null) return;
-  // 'bg-grey rounded-lg border-white border-4  w-40  overflow-auto h-64 flex flex-col justify-center items-center '
+
   return (
     <div className='fixed inset-0 flex flex-col items-center justify-center bg-black bg-opacity-50'>
       <div className='max-w-md w-full p-4 bg-black rounded-xl shadow-lg flex flex-col items-center justify-center'>

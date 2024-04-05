@@ -1,44 +1,29 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import SearchBar from '../components/searchbar/SearchBar';
-import NavBar from '../components/navbar/NavBar';
-import CharCard from '../components/charCard/CharCard';
 import CharacterList from '../components/characterList/CharacterList';
 import CharModal from '../components/charModal/CharModal';
-import { Character, Thumbnail } from '../types/interface';
+import { Character } from '../types/interface';
 import BattleModal from '../components/battleModal/battleModal';
-
-// interface Thumbnail {
-//   path: string;
-//   extension: string;
-// }
-
-// interface Character {
-//   id: number;
-//   name: string;
-//   thumbnail: Thumbnail;
-//   character: string;
-//   description: string;
-// }
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [battleOccurred, setBattleOccurred] = useState<boolean>(false); // Sets state if battle occured, to conditionally render winner modal
-  const [playerChar, setPlayerChar] = useState<Character | null>(null); // Sets the chosen character by the player to battle
+  const [playerChar, setPlayerChar] = useState<Character | null>(null); // Sets the potential character chosen by the player to battle
   const [compChar, setCompChar] = useState<Character | null>(null); // Sets the random character assigned by the computer for battle
   const [confirmedPlayer, setConfirmedPlayer] = useState<Character | null>(
     null
-  );
+  ); // Sets the Confirmed Player
   const [characters, setCharacters] = useState<any[]>([]); // Stores the characters from the MarvelAPI call into state
   const [offset, setOffset] = useState<number>(0); // sets the offset for subsequent calls to the marvel API to saturate the page with the data
-  const [loading, setLoading] = useState<boolean>(false); // Manages the state of Loading
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [isBattleModalOpen, setIsBattleModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false); // Manages the state of Loading component
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Manages state of the Char Modal
+  const [isBattleModalOpen, setIsBattleModalOpen] = useState<boolean>(false); // Manages state of the Battle Modal
 
   const observer = useRef<IntersectionObserver | null>(null); // Defines the observer for the page saturation from Marvel API
   const lastCharacterRef = useRef<HTMLDivElement | null>(null); // Sets the reference for where the page will start to saturate with data
 
-  const fetchData = async (p0?: number) => {
+  // Fetches data from the Marvel API
+  const fetchData = async () => {
     setLoading(true);
     try {
       const response = await fetch(`/marvelAPI?offset=${offset}`); // Make a request to the API route
@@ -57,13 +42,14 @@ const Game: React.FC = () => {
     }
   };
 
+  // Handles the intersection for the lazy loading
   const handleIntersection: IntersectionObserverCallback = (entries) => {
     const lastEntry = entries[0];
 
     if (lastEntry.isIntersecting && !loading) {
       setOffset((prevOffset) => prevOffset + 100);
 
-      fetchData(offset).then((data) => {
+      fetchData().then((data) => {
         if (data) {
           setCharacters((prevCharacters) => [...prevCharacters, ...data]);
         }
@@ -71,6 +57,7 @@ const Game: React.FC = () => {
     }
   };
 
+  // Randomly chooses index from the characters array in the state
   const getRandomIndex: Function = (characters: any[]): number => {
     if (characters.length === 0) {
       throw new Error('Array is Empty!');
@@ -79,28 +66,31 @@ const Game: React.FC = () => {
     return randomIndex;
   };
 
+  // Assigns a random opponent from the current stat of characters
   const assignCompChar = () => {
     setCompChar(characters[getRandomIndex(characters)]);
   };
 
+  // Opens the Char Modal
   const openModal = (chosenCharacter: Character) => {
     setIsModalOpen(true);
     setPlayerChar(chosenCharacter);
   };
 
+  // Closes the Char Modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
+  // Chooses Characters for the battle
   const chooseCharacter = () => {
     setIsModalOpen(false);
     setConfirmedPlayer(playerChar);
-    // setIsModalOpen(false);
     assignCompChar();
     setIsBattleModalOpen(true);
   };
 
-  // Temporary way to define winner until OPenAi is attached
+  // Starts the battle, and temporary way to define winner until OPenAi is attached
   const battleStart = () => {
     if (!confirmedPlayer) return;
     if (!compChar) return;
@@ -112,9 +102,8 @@ const Game: React.FC = () => {
     setIsBattleModalOpen(false);
     return;
   };
-  // console.log('confirmedPlayer :', confirmedPlayer);
-  // On Page Load Character fetch
 
+  // On Page Load Character fetch
   useEffect(() => {
     fetchData().then((data) => {
       if (data) {
@@ -124,7 +113,7 @@ const Game: React.FC = () => {
     });
   }, []);
 
-  // To saturate the Character div when scrolling down to end of available characters
+  // To lazy load the Character div
   useEffect(() => {
     if (loading || characters.length === 0) return;
 

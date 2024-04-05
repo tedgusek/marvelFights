@@ -1,34 +1,8 @@
 import CharCard from '../charCard/CharCard';
 import React from 'react';
-import {
-  Thumbnail,
-  Character,
-  CharacterListProps,
-} from '@/app/types/interface';
+import { CharacterListProps } from '@/app/types/interface';
 
-// interface Thumbnail {
-//   path: string;
-//   extension: string;
-// }
-
-// interface Character {
-//   id: number;
-//   name: string;
-//   thumbnail: Thumbnail;
-//   character: string;
-//   description: string;
-// }
-
-// // interface CharacterCardProps {
-// //   character: Character;
-// // }
-// interface CharacterListProps {
-//   characters: Character[];
-//   loading: boolean;
-//   listRef: any;
-//   onCharClick: (character: Character) => void;
-//   //   ref: HTMLDivElement | null;
-// }
+//  Consider making an animated loading component to swap out for the boring loading text
 
 const CharacterList: React.FC<CharacterListProps> = ({
   characters,
