@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
+// To handle the search logic, I can only go through 100 characters ata time
+// I think I am going to need to run through each character name and see if they contain pieces of the search filter
+// if they do, I will need to store it in state
+//  I will need to make repeated calls to the API, this will be timely
+//  I could start by searching through what has already been loaded on state which may optimize a little bit, but not much
+//
+// Build a cache using Redis, of all the pertenant data at night, make it a rolling cache so there is never any down time.
+// This will improve the speed tremendously
+// Doing this will remove the need from calling the API directly to saturate the page, and make search queries
 
-interface SearchBarProps {
-  onSearch: (searchTerm: string) => void;
-}
+import React, { useState } from 'react';
+import { SearchBarProps } from '@/app/types/interface';
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');

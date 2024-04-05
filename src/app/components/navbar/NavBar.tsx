@@ -1,8 +1,9 @@
 'use client';
 
-// Will consist of Search Bar and Sign out button
 import SearchBar from '../searchbar/SearchBar';
 import SignOut from '../button/SignOut';
+
+// Currently there is pseudo functionality in the sign out, and the search bar is non functioning, need to sort out the logic
 
 const NavBar = () => {
   return (
