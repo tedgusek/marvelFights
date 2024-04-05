@@ -3,33 +3,29 @@ import md5 from 'md5';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import { NextResponse, NextRequest } from 'next/server';
+import { Character, Thumbnail, ErrorResponse } from '../types/interface';
 
 dotenv.config();
 
-interface Thumbnail {
-  path: string;
-  extension: string;
-}
+// interface Thumbnail {
+//   path: string;
+//   extension: string;
+// }
 
-interface Character {
-  name: string;
-  description: string;
-  thumbnail: Thumbnail;
-}
+// interface Character {
+//   name: string;
+//   description: string;
+//   thumbnail: Thumbnail;
+// }
 
-interface ErrorResponse {
-  error: string;
-}
+// interface ErrorResponse {
+//   error: string;
+// }
 
 export async function GET(
   req: NextRequest,
   res: NextApiResponse<Character[] | ErrorResponse>
 ) {
-  //   error: any,
-  // req: NextRequest,
-  // res: NextApiResponse<Character[] | ErrorResponse>
-  //   const { offset = 0 } = req.query;
-  //   const offset = 0;
   const query = req.url?.split('?')[1]; // Extract query parameters from the URL
   const { offset = 0 } = query
     ? require('url').parse('?' + query, true).query

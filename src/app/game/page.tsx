@@ -5,25 +5,27 @@ import NavBar from '../components/navbar/NavBar';
 import CharCard from '../components/charCard/CharCard';
 import CharacterList from '../components/characterList/CharacterList';
 import CharModal from '../components/charModal/CharModal';
+import { Character, Thumbnail } from '../types/interface';
+import BattleModal from '../components/battleModal/battleModal';
 
-interface Thumbnail {
-  path: string;
-  extension: string;
-}
+// interface Thumbnail {
+//   path: string;
+//   extension: string;
+// }
 
-interface Character {
-  id: number;
-  name: string;
-  thumbnail: Thumbnail;
-  character: string;
-  description: string;
-}
+// interface Character {
+//   id: number;
+//   name: string;
+//   thumbnail: Thumbnail;
+//   character: string;
+//   description: string;
+// }
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [battleOccurred, setBattleOccurred] = useState<boolean>(false); // Sets state if battle occured, to conditionally render winner modal
   const [playerChar, setPlayerChar] = useState<Character | null>(null); // Sets the chosen character by the player to battle
-  const [compChar, setCompChar] = useState<string>(''); // Sets the random character assigned by the computer for battle
+  const [compChar, setCompChar] = useState<Character | null>(null); // Sets the random character assigned by the computer for battle
   const [confirmedPlayer, setConfirmedPlayer] = useState<Character | null>(
     null
   );
@@ -31,6 +33,7 @@ const Game: React.FC = () => {
   const [offset, setOffset] = useState<number>(0); // sets the offset for subsequent calls to the marvel API to saturate the page with the data
   const [loading, setLoading] = useState<boolean>(false); // Manages the state of Loading
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isBattleModalOpen, setIsBattleModalOpen] = useState<boolean>(false);
 
   const observer = useRef<IntersectionObserver | null>(null); // Defines the observer for the page saturation from Marvel API
   const lastCharacterRef = useRef<HTMLDivElement | null>(null); // Sets the reference for where the page will start to saturate with data
@@ -68,9 +71,21 @@ const Game: React.FC = () => {
     }
   };
 
+  const getRandomIndex: Function = (characters: any[]): number => {
+    if (characters.length === 0) {
+      throw new Error('Array is Empty!');
+    }
+    const randomIndex = Math.floor(Math.random() * characters.length);
+    return randomIndex;
+  };
+
+  const assignCompChar = () => {
+    setCompChar(characters[getRandomIndex(characters)]);
+  };
+
   const openModal = (chosenCharacter: Character) => {
-    setPlayerChar(chosenCharacter);
     setIsModalOpen(true);
+    setPlayerChar(chosenCharacter);
   };
 
   const closeModal = () => {
@@ -78,11 +93,28 @@ const Game: React.FC = () => {
   };
 
   const chooseCharacter = () => {
-    setConfirmedPlayer(playerChar);
     setIsModalOpen(false);
+    setConfirmedPlayer(playerChar);
+    // setIsModalOpen(false);
+    assignCompChar();
+    setIsBattleModalOpen(true);
   };
-  console.log('confirmedPlayer :', confirmedPlayer);
+
+  // Temporary way to define winner until OPenAi is attached
+  const battleStart = () => {
+    if (!confirmedPlayer) return;
+    if (!compChar) return;
+    if (confirmedPlayer.id > compChar.id) {
+      console.log(`Player wins`);
+    } else {
+      console.log('Comp Wins!');
+    }
+    setIsBattleModalOpen(false);
+    return;
+  };
+  // console.log('confirmedPlayer :', confirmedPlayer);
   // On Page Load Character fetch
+
   useEffect(() => {
     fetchData().then((data) => {
       if (data) {
@@ -135,6 +167,12 @@ const Game: React.FC = () => {
           character={playerChar}
           onClose={closeModal}
           setPlayerChar={chooseCharacter}
+        />
+      )}
+      {isBattleModalOpen && (
+        <BattleModal
+          characters={[confirmedPlayer, compChar]}
+          battleOnClick={battleStart}
         />
       )}
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}
