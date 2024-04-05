@@ -20,6 +20,7 @@ export interface ModalProps {
   setPlayerChar: () => void;
 }
 
+
 export interface ErrorResponse {
   error: string;
 }

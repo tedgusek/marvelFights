@@ -13,7 +13,7 @@ const CharacterList: React.FC<CharacterListProps> = ({
   return (
     <div className='w-full rounded-lg flex flex-wrap justify-center'>
       {characters.map((character, index) =>
-        index === characters.length - 20 ? (
+        index === characters.length - 50 ? (
           <CharCard
             key={character.id}
             character={character}

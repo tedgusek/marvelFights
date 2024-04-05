@@ -1,15 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import md5 from 'md5';
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import { NextResponse, NextRequest } from 'next/server';
 import { Character, Thumbnail, ErrorResponse } from '../types/interface';
 
-dotenv.config();
+// dotenv.config();
 
 export async function GET(
-  req: NextRequest,
-  res: NextApiResponse<Character[] | ErrorResponse>
+  req: NextRequest
+  // res: NextResponse<Character[] | ErrorResponse>
+  // res: NextApiResponse<Character[] | ErrorResponse>
 ) {
   // Extract query parameters from the URL
   const query = req.url?.split('?')[1];
@@ -35,7 +36,7 @@ export async function GET(
 
       const charactersArray: Character[] = responseData.data.results;
 
-      return Response.json(charactersArray);
+      return NextResponse.json(charactersArray, { status: 200 });
     }
     throw new Error('Failed to fetch Data from Marvel API');
   } catch (error) {
