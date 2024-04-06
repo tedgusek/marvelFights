@@ -1,18 +1,26 @@
+// 'use client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import md5 from 'md5';
 // import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import { NextResponse, NextRequest } from 'next/server';
+// import { useSearchParams } from 'next/navigation';
 import { Character, Thumbnail, ErrorResponse } from '../types/interface';
 
 // dotenv.config();
 
 export async function GET(
-  req: NextRequest
+  req: NextRequest,
+  res: NextResponse
   // res: NextResponse<Character[] | ErrorResponse>
   // res: NextApiResponse<Character[] | ErrorResponse>
 ) {
   // Extract query parameters from the URL
+
+  // const queryParams = useSearchParams();
+  // let offset = queryParams.get('offset');
+  // if (!offset) offset = '0';
+
   const query = req.url?.split('?')[1];
 
   const { offset = 0 } = query
@@ -40,6 +48,6 @@ export async function GET(
     }
     throw new Error('Failed to fetch Data from Marvel API');
   } catch (error) {
-    return Response.json({ error: 'Internal Server Error' });
+    return NextResponse.json({ error: 'Internal Server Error here' });
   }
 }

@@ -20,7 +20,6 @@ export interface ModalProps {
   setPlayerChar: () => void;
 }
 
-
 export interface ErrorResponse {
   error: string;
 }
@@ -50,4 +49,17 @@ export interface CharacterPair {
 export interface BattleModalProps {
   characters: CharacterPair;
   battleOnClick: () => void;
+}
+
+export interface BattleButtonProps {
+  player: Character;
+  comp: Character;
+  toDetermineWinnerOnClick: () => void;
+}
+
+interface OpenAiReqContent {}
+
+export interface OpenAiRequest {
+  role: String;
+  content: String;
 }
