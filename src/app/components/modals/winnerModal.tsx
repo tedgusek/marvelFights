@@ -1,10 +1,9 @@
 import React from 'react';
-import { ModalProps } from '@/app/types/interface';
+import { WinnerModalProps } from '@/app/types/interface';
 
-const CharModal: React.FC<ModalProps> = ({
+const WinnerModal: React.FC<WinnerModalProps> = ({
   character,
-  onClose,
-  setPlayerChar,
+  closeWinnerModal,
 }) => {
   if (character === null) return;
 
@@ -21,15 +20,9 @@ const CharModal: React.FC<ModalProps> = ({
         <div className='flex justify-between mt-4'>
           <button
             className='relative bottom-1  rounded-full px-4 bg-green-500 bg-opacity-75 hover:bg-opacity-100 mr-10'
-            onClick={setPlayerChar}
+            onClick={closeWinnerModal}
           >
-            Confirm Character
-          </button>
-          <button
-            className='relative bottom-1 right-1 rounded-full px-4 bg-red-600 bg-opacity-70 hover:bg-opacity-100 ml-10'
-            onClick={onClose}
-          >
-            Cancel
+            Close
           </button>
         </div>
       </div>
@@ -37,4 +30,4 @@ const CharModal: React.FC<ModalProps> = ({
   );
 };
 
-export default CharModal;
+export default WinnerModal;

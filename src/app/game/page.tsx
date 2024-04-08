@@ -2,8 +2,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CharacterList from '../components/characterList/CharacterList';
 import CharModal from '../components/modals/CharModal';
-import { Character, OpenAiRequest } from '../types/interface';
+import { Character, OpenAiRequest, WinningCharacter } from '../types/interface';
 import BattleModal from '../components/modals/battleModal';
+import WinnerModal from '../components/modals/winnerModal';
+import LoadingComponent from '../components/loading/Loading';
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -19,6 +21,8 @@ const Game: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // Manages state of the Char Modal
   const [isBattleModalOpen, setIsBattleModalOpen] = useState<boolean>(false); // Manages state of the Battle Modal
   const [isWinnerModalOpen, setIsWinnereModalOpen] = useState<boolean>(false); // Manages state of the Battle Modal
+  const [winnerChar, setWinnerChar] = useState<WinningCharacter | null>(null); // manages Winner of battle
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const observer = useRef<IntersectionObserver | null>(null); // Defines the observer for the page saturation from Marvel API
   const lastCharacterRef = useRef<HTMLDivElement | null>(null); // Sets the reference for where the page will start to saturate with data
@@ -152,25 +156,68 @@ const Game: React.FC = () => {
     return contentArray;
   };
 
-  // Starts the battle, and temporary way to define winner until OPenAi is attached
+  // Uses description from battle to produce an image
+  const getImage = async (description: string) => {
+    try {
+      const response = await fetch(`/openAiImageAPI`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: description }),
+      }); // Make a request to the API route
+
+      if (!response.ok) {
+        throw new Error('Failed to Fetch data');
+      }
+
+      const data = await response.json();
+      const { output } = data;
+      console.log('OpenAI replied: ', output.content);
+
+      return data.content;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+    // return 'temp';
+  };
+
+  // Starts the battle, and uses ai to define winner
   const battleStart = async () => {
     if (!confirmedPlayer) return;
     if (!compChar) return;
+    setIsLoading(true);
     const winnerObject = await fetchWinner();
-    console.log('winnerObject ', winnerObject.content);
-    const aiRes: string[] = parseWinnerObject(winnerObject.content);
+    // console.log('winnerObject ', winnerObject.output.content);
+    const aiRes: string[] = parseWinnerObject(winnerObject.output.content);
     if (confirmedPlayer.name.includes(aiRes[0])) {
-      // Set Winner to confirmed Player
-      // Set description to aiRes[1]
-      // Set img to ai Generated battle scene- Have not built this out yet
+      const battleImage: string = await getImage(aiRes[1]);
+      setWinnerChar({
+        id: confirmedPlayer.id,
+        name: confirmedPlayer.name,
+        thumbnail: battleImage,
+        description: aiRes[1],
+      });
     } else {
-      // Set Winner to comp
-      // Set description to aiRes[1]
-      // Set image to aiGenerated battle Scene- Have not implemented yet
+      const battleImage: string = await getImage(aiRes[1]);
+      setWinnerChar({
+        id: compChar.id,
+        name: compChar.name,
+        thumbnail: battleImage,
+        description: aiRes[1],
+      });
     }
+    setIsLoading(false);
     setIsWinnereModalOpen(true);
     setIsBattleModalOpen(false);
     return;
+  };
+  // This will allow player to play the game again after the battle
+  const closeWinnerModal = () => {
+    setIsWinnereModalOpen(false);
+    setWinnerChar(null);
   };
 
   // On Page Load Character fetch
@@ -234,6 +281,13 @@ const Game: React.FC = () => {
           battleOnClick={battleStart}
         />
       )}
+      {isWinnerModalOpen && (
+        <WinnerModal
+          character={winnerChar}
+          closeWinnerModal={closeWinnerModal}
+        />
+      )}
+      {isLoading && <LoadingComponent loading={isLoading} />}
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}
       {/* have 2 char cards, one will be chosen by the player, one will be randomly selected */}
       {/* Handle mapping response to character cards here */}

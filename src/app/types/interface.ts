@@ -13,6 +13,20 @@ export interface Character {
   description: string;
 }
 
+// Winning Character
+export interface WinningCharacter {
+  id: number;
+  name: string;
+  thumbnail: string;
+  description: string;
+}
+
+// Winner Modal Props
+export interface WinnerModalProps {
+  character: WinningCharacter | null;
+  closeWinnerModal: () => void;
+}
+
 // Modal Props for the Char Modal
 export interface ModalProps {
   character: Character | null;
@@ -62,4 +76,7 @@ interface OpenAiReqContent {}
 export interface OpenAiRequest {
   role: String;
   content: String;
+}
+export interface LoadingProps {
+  loading: boolean;
 }
