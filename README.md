@@ -20,15 +20,15 @@ If you are loading this on your local machine, you will need to sign up for an a
 
 Create your own .env file and store these values with the variable names as follows :
 
-# Private Key
+- Private Key
 
 MARVEL_API_KEY_PRIVATE= 'Enter your Marvel Private Key here'
 
-# Public Key
+- Public Key
 
 MARVEL_API_KEY_PUBLIC= 'Enter your Marvel Public Key here'
 
-# OpenAI Key
+- OpenAI Key
 
 OPENAI_API_KEY='Enter your OpenAI key here'
 
