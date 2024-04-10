@@ -8,7 +8,7 @@ const openai = new OpenAI({
 export async function POST(req: Request, res: NextResponse) {
   const body = await req.json();
 
-  const prompt: string = `It is important to accurately depict each Marvel character.  It is extremely important to only create characters exclusively from the Marvel universe.  This is the descrtiption of the battle: ${body.messages}, create an image that depicts this scene clearly and in a comic book style. If you do not know the character, search for references. Do not include text in the image. Clearly show the vitor of the battle.`;
+  const prompt: string = `It is important to accurately depict each Marvel character.  It is extremely important to only create characters exclusively from the Marvel universe.  This is the descrtiption of the battle: ${body.messages}, create an image that depicts this scene clearly and in a comic book style. If you do not know the character, search for references. It is imperative to not include text in the image.`;
 
   const main = async () => {
     const image = await openai.images.generate({
