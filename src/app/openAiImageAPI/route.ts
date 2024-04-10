@@ -24,9 +24,11 @@ export async function POST(req: Request, res: NextResponse) {
     //   });
     //   image_url = response.data.data[0].url;
     const theResponse = image.data[0].url;
+    // console.log('theResponse :', theResponse);
     return theResponse;
   };
-  const theResponse = main();
+  const theResponse = await main();
+  console.log('theResponse :', theResponse);
   //   async function main() {
   //     console.log(image.data);
   //   }

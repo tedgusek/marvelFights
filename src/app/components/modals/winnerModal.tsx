@@ -12,7 +12,7 @@ const WinnerModal: React.FC<WinnerModalProps> = ({
       <div className='max-w-md w-full p-4 bg-black rounded-xl shadow-lg flex flex-col items-center justify-center'>
         <h2 className='text-xl font-bold mb-2'>Winner {character.name} !!</h2>
         <img
-          src={`ai generated image to be supplied later`}
+          src={character.thumbnail}
           alt={`AI generated image of ${character.name} winning a battle`}
           className='w-auto rounded-xl shadow-slate-50 shadow-lg max-h-96 overflow-auto'
         />

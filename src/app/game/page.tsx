@@ -6,6 +6,7 @@ import { Character, OpenAiRequest, WinningCharacter } from '../types/interface';
 import BattleModal from '../components/modals/battleModal';
 import WinnerModal from '../components/modals/winnerModal';
 import LoadingComponent from '../components/loading/Loading';
+import { BattleImage } from '../types/interface';
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -173,9 +174,10 @@ const Game: React.FC = () => {
 
       const data = await response.json();
       const { output } = data;
-      console.log('OpenAI replied: ', output.content);
+      console.log('OpenAI Image replied output: ', output);
+      // console.log('OpenAI Image replied data: ', data);
 
-      return data.content;
+      return data;
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -193,19 +195,20 @@ const Game: React.FC = () => {
     // console.log('winnerObject ', winnerObject.output.content);
     const aiRes: string[] = parseWinnerObject(winnerObject.output.content);
     if (confirmedPlayer.name.includes(aiRes[0])) {
-      const battleImage: string = await getImage(aiRes[1]);
+      const battleImage: BattleImage = await getImage(aiRes[1]);
+      console.log('Inside Battle Start battleImage : ', battleImage.output);
       setWinnerChar({
         id: confirmedPlayer.id,
         name: confirmedPlayer.name,
-        thumbnail: battleImage,
+        thumbnail: battleImage.output,
         description: aiRes[1],
       });
     } else {
-      const battleImage: string = await getImage(aiRes[1]);
+      const battleImage: BattleImage = await getImage(aiRes[1]);
       setWinnerChar({
         id: compChar.id,
         name: compChar.name,
-        thumbnail: battleImage,
+        thumbnail: battleImage.output,
         description: aiRes[1],
       });
     }

@@ -80,3 +80,7 @@ export interface OpenAiRequest {
 export interface LoadingProps {
   loading: boolean;
 }
+
+export interface BattleImage {
+  output: string;
+}
