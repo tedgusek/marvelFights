@@ -1,25 +1,11 @@
 // 'use client';
-import { NextApiRequest, NextApiResponse } from 'next';
 import md5 from 'md5';
-// import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 import { NextResponse, NextRequest } from 'next/server';
-// import { useSearchParams } from 'next/navigation';
-import { Character, Thumbnail, ErrorResponse } from '../types/interface';
+import { Character } from '../types/interface';
 
-// dotenv.config();
-
-export async function GET(
-  req: NextRequest,
-  res: NextResponse
-  // res: NextResponse<Character[] | ErrorResponse>
-  // res: NextApiResponse<Character[] | ErrorResponse>
-) {
+export async function GET(req: NextRequest, res: NextResponse) {
   // Extract query parameters from the URL
-
-  // const queryParams = useSearchParams();
-  // let offset = queryParams.get('offset');
-  // if (!offset) offset = '0';
 
   const query = req.url?.split('?')[1];
 

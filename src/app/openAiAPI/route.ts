@@ -17,7 +17,7 @@ export async function POST(req: Request, res: NextResponse) {
     frequency_penalty: 0,
     presence_penalty: 0,
   });
-  console.log(completion.choices[0].message);
+  //   console.log(completion.choices[0].message);
   const theResponse = completion.choices[0].message;
 
   return NextResponse.json({ output: theResponse }, { status: 200 });

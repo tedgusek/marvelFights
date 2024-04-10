@@ -26,7 +26,9 @@ const LoadingComponent: React.FC<LoadingProps> = ({ loading }) => {
     >
       {/* Your loading indicator here */}
       <div className='h-full w-full flex justify-center items-center'>
-        <div className='loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24'></div>
+        <div className='loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 flex flex-row items-center bg-red-500 m-4'>
+          Loading...
+        </div>
       </div>
     </div>
   );

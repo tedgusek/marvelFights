@@ -2,11 +2,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CharacterList from '../components/characterList/CharacterList';
 import CharModal from '../components/modals/CharModal';
-import { Character, OpenAiRequest, WinningCharacter } from '../types/interface';
+import { Character, WinningCharacter, BattleImage } from '../types/interface';
 import BattleModal from '../components/modals/battleModal';
 import WinnerModal from '../components/modals/winnerModal';
 import LoadingComponent from '../components/loading/Loading';
-import { BattleImage } from '../types/interface';
 
 const Game: React.FC = () => {
   const [searchResults, setSearchResults] = useState<string[]>([]);
@@ -59,8 +58,7 @@ const Game: React.FC = () => {
     if (compChar !== null) {
       comp = compChar.name;
     }
-    console.log('confirmedPlayer : ', player);
-    console.log('compChar : ', comp);
+
     const aiReq = [
       {
         role: 'user',
@@ -93,7 +91,7 @@ const Game: React.FC = () => {
 
       const data = await response.json();
       const { output } = data;
-      console.log('OpenAI replied: ', output.content);
+      // console.log('OpenAI replied: ', output.content);
 
       return data;
     } catch (error) {
@@ -174,8 +172,6 @@ const Game: React.FC = () => {
 
       const data = await response.json();
       const { output } = data;
-      console.log('OpenAI Image replied output: ', output);
-      // console.log('OpenAI Image replied data: ', data);
 
       return data;
     } catch (error) {
@@ -183,20 +179,21 @@ const Game: React.FC = () => {
     } finally {
       setLoading(false);
     }
-    // return 'temp';
   };
 
   // Starts the battle, and uses ai to define winner
   const battleStart = async () => {
     if (!confirmedPlayer) return;
     if (!compChar) return;
+
     setIsLoading(true);
+
     const winnerObject = await fetchWinner();
-    // console.log('winnerObject ', winnerObject.output.content);
     const aiRes: string[] = parseWinnerObject(winnerObject.output.content);
+
     if (confirmedPlayer.name.includes(aiRes[0])) {
       const battleImage: BattleImage = await getImage(aiRes[1]);
-      console.log('Inside Battle Start battleImage : ', battleImage.output);
+
       setWinnerChar({
         id: confirmedPlayer.id,
         name: confirmedPlayer.name,
@@ -217,6 +214,7 @@ const Game: React.FC = () => {
     setIsBattleModalOpen(false);
     return;
   };
+
   // This will allow player to play the game again after the battle
   const closeWinnerModal = () => {
     setIsWinnereModalOpen(false);
