@@ -16,7 +16,21 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you are loading this on your local machine, you will need to sign up for an account with Marvel to acquire a Personal and Public API key. As well as with OpenAI.
+
+Create your own .env file and store these values with the variable names as follows :
+
+# Private Key
+
+MARVEL_API_KEY_PRIVATE= 'Enter your Marvel Private Key here'
+
+# Public Key
+
+MARVEL_API_KEY_PUBLIC= 'Enter your Marvel Public Key here'
+
+# OpenAI Key
+
+OPENAI_API_KEY='Enter your OpenAI key here'
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
@@ -34,4 +48,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
 # marvelFights
+
+This app is built using the Maervel API to interact with their database of characters. It is still in Beta. It also utilizes the power of OpenAI to create fictional Battole descriptions and create imagery of these battles. This App is also still in Beta and will continue to be iterated on to create a more well rounded user experience of bringing the debates of who would win into the digital realm.
+
+To contribute to this repository, feel free to reach out!
