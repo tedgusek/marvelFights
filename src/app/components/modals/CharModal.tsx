@@ -32,6 +32,9 @@ const CharModal: React.FC<ModalProps> = ({
             Cancel
           </button>
         </div>
+        <div className='bottom-2 relative bg-inherit text-xs text-center mt-4'>
+          Data provided by Marvel © 2024
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LoadingProps } from '@/app/types/interface';
 
-const LoadingComponent: React.FC<LoadingProps> = ({ loading }) => {
+const LoadingComponent: React.FC<LoadingProps> = ({ loading, description }) => {
   const [loadingOpacity, setLoadingOpacity] = useState<number>(0); // Initial opacity
 
   useEffect(() => {
@@ -26,8 +26,11 @@ const LoadingComponent: React.FC<LoadingProps> = ({ loading }) => {
     >
       {/* Your loading indicator here */}
       <div className='h-full w-full flex justify-center items-center'>
-        <div className='loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 flex flex-row items-center bg-red-500 m-4'>
-          Loading...
+        <div className='text-center'>
+          <h1 className='text-4xl font-bold mb-4 text-black'>{description}</h1>
+          <div className='loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-24 w-24 flex flex-row items-center bg-red-500 m-4 text-center justify-center'>
+            Loading...
+          </div>
         </div>
       </div>
     </div>

@@ -24,6 +24,7 @@ export interface WinningCharacter {
 // Winner Modal Props
 export interface WinnerModalProps {
   character: WinningCharacter | null;
+  // isLoading: boolean;
   closeWinnerModal: () => void;
 }
 
@@ -79,6 +80,7 @@ export interface OpenAiRequest {
 }
 export interface LoadingProps {
   loading: boolean;
+  description: string;
 }
 
 export interface BattleImage {

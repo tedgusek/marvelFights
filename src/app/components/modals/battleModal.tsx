@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import CharCard from '../charCard/CharCard';
 import { BattleModalProps } from '@/app/types/interface';
+// import { useState } from 'react';
 
 const BattleModal: React.FC<BattleModalProps> = ({
   characters,
   battleOnClick,
 }) => {
+  const [isButtonClicked, setIsbuttonClicked] = useState<boolean>(false);
+
   if (!characters[0] || !characters[1]) return;
 
   const doNothing = () => {
     console.log(
       'this is a placeholder to fill in a param so that I could reuse the CharCard component'
     );
+  };
+
+  const handleBattleClick = () => {
+    if (!isButtonClicked) {
+      setIsbuttonClicked(true);
+      battleOnClick();
+    }
   };
 
   return (
@@ -37,10 +47,14 @@ const BattleModal: React.FC<BattleModalProps> = ({
         </div>
         <button
           className='flex flex-col items-center bottom-1 rounded-full px-4 bg-green-600 bg-opacity-70 hover:bg-opacity-100'
-          onClick={battleOnClick}
+          onClick={handleBattleClick}
+          disabled={isButtonClicked}
         >
           BATTLE!!
         </button>
+        <div className='bottom-2 relative bg-inherit text-xs text-center mt-8'>
+          Data provided by Marvel © 2024
+        </div>
       </div>
     </div>
   );

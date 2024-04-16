@@ -22,9 +22,6 @@ export default function GameLayout({
           <NavBar />
         </div>
         <div className='flex flex-col items-center mt-40'>{children}</div>
-        <div className='bottom-2 fixed bg-inherit '>
-          Data Provided by Marvel. © 2024 Marvel
-        </div>
       </body>
     </html>
   );

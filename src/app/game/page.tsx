@@ -23,6 +23,7 @@ const Game: React.FC = () => {
   const [isWinnerModalOpen, setIsWinnereModalOpen] = useState<boolean>(false); // Manages state of the Battle Modal
   const [winnerChar, setWinnerChar] = useState<WinningCharacter | null>(null); // manages Winner of battle
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingMessage, setLoadingMessage] = useState<string>('');
 
   const observer = useRef<IntersectionObserver | null>(null); // Defines the observer for the page saturation from Marvel API
   const lastCharacterRef = useRef<HTMLDivElement | null>(null); // Sets the reference for where the page will start to saturate with data
@@ -156,14 +157,24 @@ const Game: React.FC = () => {
   };
 
   // Uses description from battle to produce an image
-  const getImage = async (description: string) => {
+  const getImage = async (
+    playerName: string,
+    compName: string,
+    description: string
+  ) => {
     try {
       const response = await fetch(`/openAiImageAPI`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ messages: description }),
+        body: JSON.stringify({
+          messages: {
+            playerName: playerName,
+            compName: compName,
+            description: description,
+          },
+        }),
       }); // Make a request to the API route
 
       if (!response.ok) {
@@ -186,13 +197,24 @@ const Game: React.FC = () => {
     if (!confirmedPlayer) return;
     if (!compChar) return;
 
-    setIsLoading(true);
+    // setIsLoading(true);
 
     const winnerObject = await fetchWinner();
     const aiRes: string[] = parseWinnerObject(winnerObject.output.content);
 
+    setLoadingMessage(aiRes[1]);
+    // setWinnerChar((prevState) => ({ ...prevState, description: aiRes[1] }));
+
+    setIsLoading(true);
+
+    const battleImage: BattleImage = await getImage(
+      confirmedPlayer.name,
+      compChar.name,
+      aiRes[1]
+    );
+
     if (confirmedPlayer.name.includes(aiRes[0])) {
-      const battleImage: BattleImage = await getImage(aiRes[1]);
+      // const battleImage: BattleImage = await getImage(aiRes[1]);
 
       setWinnerChar({
         id: confirmedPlayer.id,
@@ -201,7 +223,7 @@ const Game: React.FC = () => {
         description: aiRes[1],
       });
     } else {
-      const battleImage: BattleImage = await getImage(aiRes[1]);
+      // const battleImage: BattleImage = await getImage(aiRes[1]);
       setWinnerChar({
         id: compChar.id,
         name: compChar.name,
@@ -260,6 +282,7 @@ const Game: React.FC = () => {
     setSearchResults([...searchResults]);
   };
 
+  //  Working to load the battle description in the loading modal so that the user can start reading the description while waiting for the ai generated image to be produced
   return (
     <div className='flex flex-col items-center overflow-auto fixed top-36 bottom-10 w-5/6 border-green-400 border-4 rounded-xl'>
       <h1>Game</h1>
@@ -288,7 +311,9 @@ const Game: React.FC = () => {
           closeWinnerModal={closeWinnerModal}
         />
       )}
-      {isLoading && <LoadingComponent loading={isLoading} />}
+      {isLoading && (
+        <LoadingComponent loading={isLoading} description={loadingMessage} />
+      )}
       {/* Button that will utilize the player and randomly selected char and fetch results of fight from OpenAI */}
       {/* have 2 char cards, one will be chosen by the player, one will be randomly selected */}
       {/* Handle mapping response to character cards here */}
