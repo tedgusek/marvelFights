@@ -10,13 +10,14 @@ Clone this repo to your machine, and work out of the Dev Branch.
 
 You will need to sign up for an account with [Marvel](https://developer.marvel.com/documentation/getting_started) to acquire a Personal and Public API key. As well as with [OpenAI](https://openai.com/index/chatgpt/).
 
+
 Once you have acquired your keys, create your own .env file at the root level and store the acquired values with the variable names as follows :
 
-- Private Key
+- Marvel Private Key
 
 MARVEL_API_KEY_PRIVATE= 'Enter your Marvel Private Key here'
 
-- Public Key
+- Marvel Public Key
 
 MARVEL_API_KEY_PUBLIC= 'Enter your Marvel Public Key here'
 
