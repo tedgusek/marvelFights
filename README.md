@@ -18,13 +18,13 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 If you are loading this on your local machine, you will need to sign up for an account with Marvel to acquire a Personal and Public API key. As well as with OpenAI.
 
-Create your own .env file and store these values with the variable names as follows :
+Create your own .env file in the root directory and store these values with the variable names as follows :
 
-- Private Key
+- Marvel Private Key
 
 MARVEL_API_KEY_PRIVATE= 'Enter your Marvel Private Key here'
 
-- Public Key
+- Marvel Public Key
 
 MARVEL_API_KEY_PUBLIC= 'Enter your Marvel Public Key here'
 
